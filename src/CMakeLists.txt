@@ -9,6 +9,8 @@ message(STATUS "PYTHON_PATH: $ENV{PYTHON_PATH}")
 SET(CPYTHON_VER "3.13")
 SET(PYTHON_VER 313)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 target_include_directories(pyFuzzer_common INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/fuzzerHelper
     ${CMAKE_CURRENT_SOURCE_DIR}/fuzzerHelper/utils

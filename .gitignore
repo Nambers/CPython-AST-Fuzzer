@@ -9,3 +9,4 @@ build
 crash-*.txt
 src/codgen/*_gen.*
 last_case_corpus.py
+.clangd

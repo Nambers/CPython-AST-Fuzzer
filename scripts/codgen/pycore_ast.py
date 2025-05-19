@@ -1,8 +1,10 @@
 import pathlib
-from glob import glob
 import re
 import sys
 
+if len(sys.argv) != 3:
+    print("Usage: python pycore_ast.py <header> <output>")
+    sys.exit(1)
 
 def extract_enum_kinds(source):
     enums = {}
@@ -32,9 +34,7 @@ def extract_pyast_constructors(source):
     return constructors
 
 
-HEADER_PATH = "cpython_bin/include/python*/internal/pycore_ast.h"
-HEADER_PATH = glob(HEADER_PATH)[0]
-HEADER_PATH = pathlib.Path(HEADER_PATH).resolve()
+HEADER_PATH = pathlib.Path(sys.argv[1])
 
 FUNC_TEMPLATE = """
 %s default%s(ast_data_t *data){
@@ -64,13 +64,6 @@ source_content = """
 
 int table_size[] = {%s};
 """.strip()
-
-
-if len(sys.argv) != 2:
-    print("Usage: python pycore_ast.py <output_file>")
-    sys.exit(1)
-
-print("parse from", HEADER_PATH)
 
 with open(HEADER_PATH, "r") as f:
     source = f.read()
@@ -133,7 +126,7 @@ void(** implementation_tables[])(ast_data_t *) = {
     "\n   ".join([f"{name}_funcs," for name in enums.keys()]).removesuffix(",")
 )
 
-with open(sys.argv[1] + ".c", "w") as f:
+with open(sys.argv[2] + ".c", "w") as f:
     f.write(source_content)
-with open(sys.argv[1] + ".h", "w") as f:
+with open(sys.argv[2] + ".h", "w") as f:
     f.write(header_content)

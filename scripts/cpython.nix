@@ -37,6 +37,7 @@ pkgs.mkShell {
   stdenv= pkgs.ccacheStdenv;
   packages = [
     pkgs.cmake
+    pkgs.ninja
     pkgs.clang_18
     pkgs.llvm_18
     pkgs.lld_18
